@@ -6,6 +6,21 @@ import weekday from 'dayjs/plugin/weekday';
 dayjs.locale('ru');
 dayjs.extend(weekday);
 
+const Month: { [key: string]: string } = {
+  1: 'Января',
+  2: 'Февраля',
+  3: 'Марта',
+  4: 'Апреля',
+  5: 'Мая',
+  6: 'Июня',
+  7: 'Июля',
+  8: 'Августа',
+  9: 'Сентября',
+  10: 'Октября',
+  11: 'Ноября',
+  12: 'Декабря',
+};
+
 export class DateInfo {
   private date: Dayjs;
   private month: string;
@@ -14,7 +29,7 @@ export class DateInfo {
 
   constructor() {
     this.date = dayjs();
-    this.month = this.date.format('MMMM');
+    this.month = this.date.format('M');
     this.namedDays = [];
     this.numberDays = [];
   }
@@ -39,6 +54,6 @@ export class DateInfo {
   }
 
   getMonth() {
-    return this.month[0].toUpperCase() + this.month.slice(1)
+    return Month[this.month];
   }
 }
