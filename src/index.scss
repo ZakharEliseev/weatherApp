@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F4F4F4;
+}
+
+.main {
+  width: 850px;
+  height: 380px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  transform: translateY(50%);
+}
+
+.days {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.weather {
+  list-style-type: none;
+}
