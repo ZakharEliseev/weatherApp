@@ -32,24 +32,29 @@ class App {
     return this.input.value;
   };
 
-  init() {
+  getInputValue() {
+    return this.input.value ? this.input.value : 'Москва'
+  }
+
+  async init() {
     this.form.addEventListener('submit', async (e) => {
       if (this.input.value.length === 0) {
         alert('Заполните поле!');
         e.preventDefault();
       }
-      this.weatherManager.renderWeather(this.onGetCityName);
+      this.weatherManager.rendCityName(this.getInputValue());
       e.preventDefault();
+      this.weatherManager.renderWeather(
+        await this.dataManager.getFormattedData(this.getInputValue()),
+      );
+      await this.console();
       this.input.value = '';
     });
     this.calendar.renderCalendar(this.onGetNumberDays, this.onGetMonthName, this.onGetNamedDays);
-    this.console();
   }
 
   async console() {
-    const rowData = await this.dataManager.getRowData();
-    const data = await this.dataManager.getProceedData()
-    console.log(rowData);
+    const data = await this.dataManager.getFormattedData(this.getInputValue());
     console.log(data);
   }
 }

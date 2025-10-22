@@ -1,29 +1,37 @@
 export class WeatherManager {
   private weatherBlock: HTMLUListElement;
   private city: HTMLHeadingElement;
+  private templateWeatherItem: HTMLTemplateElement;
 
-  constructor () {
+  constructor() {
     this.weatherBlock = document.querySelector('.weather') as HTMLUListElement;
     this.city = document.querySelector('.city') as HTMLHeadingElement;
+    this.templateWeatherItem = document.querySelector(
+      '#template-weather_item',
+    ) as HTMLTemplateElement;
   }
 
-  renderWeather(cityName: () => string) {
-    const currentCity = cityName().charAt(0).toUpperCase() + cityName().slice(1);
+  rendCityName(cityName: string) {
+    const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
     this.city.textContent = `Погода в городе ${currentCity}`;
-
-    const li = document.createElement('li');
-    li.classList.add('weather-item');
-
-    const weatherTempTime = document.createElement('div');
-    weatherTempTime.classList.add('weather-temp');
-    const weatherTime = document.createElement('p');
-    weatherTime.classList.add('weather-temp_time');
-    const weatherTemp = document.createElement('p');
-    weatherTemp.classList.add('weather-temp_degree');
-
-    weatherTempTime.append(weatherTime, weatherTemp)
-    li.append(weatherTempTime)
-    this.weatherBlock.append(li);
   }
 
+  renderWeather(data: any) {
+    const template = this.templateWeatherItem.content.cloneNode(true);
+    this.weatherBlock.append(template);
+    const time = document.querySelector('.weather-temp_time') as HTMLParagraphElement;
+    time.textContent = data.time;
+    const degree = document.querySelector('.weather-temp_degree') as HTMLHeadElement;
+    degree.textContent = data.temp;
+    const icon = document.querySelector('.weather-descr_icon') as HTMLDivElement;
+    icon.textContent = data.weatherIcon;
+    const descr = document.querySelector('.weather-descr-text') as HTMLDivElement;2
+    descr.textContent = data.weatherDescr;
+    const wind = document.querySelector('.weather-wind_metric') as HTMLParagraphElement;2
+    wind.textContent = data.wind;
+    const pressure = document.querySelector('.weather-pressure_metric') as HTMLParagraphElement;2
+    pressure.textContent = data.pressure;
+    const humidity = document.querySelector('.weather-humidity_metric') as HTMLParagraphElement;2
+    humidity.textContent = data.humidity;
+  }
 }
