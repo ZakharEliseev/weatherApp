@@ -1,14 +1,15 @@
-import { Config } from "../../config"
-import { Calendar } from "./calendarManager";
-import { DataManager } from "./dataManager";
+import { Calendar } from './calendarManager';
+import { DataManager } from './dataManager';
 import { DateInfo } from './dateManager';
+import { WeatherManager } from './weatherManager';
+
 class App {
   private form: HTMLFormElement;
   private input: HTMLInputElement;
   private calendar = new Calendar();
   private date = new DateInfo();
   private dataManager = new DataManager();
-  private config = new Config();
+  private weatherManager = new WeatherManager();
 
   constructor() {
     this.form = document.querySelector('.weather-form') as HTMLFormElement;
@@ -27,18 +28,31 @@ class App {
     return this.date.getNamedDays();
   };
 
+  onGetCityName = (): string => {
+    return this.input.value;
+  };
+
   init() {
     this.form.addEventListener('submit', async (e) => {
+      if (this.input.value.length === 0) {
+        alert('Заполните поле!');
+        e.preventDefault();
+      }
+      this.weatherManager.renderWeather(this.onGetCityName);
       e.preventDefault();
-      const result = await this.dataManager.fetchDataOW(
-        this.config.getForecastFromOW(this.input.value),
-      );
-      console.log(result);
+      this.input.value = '';
     });
     this.calendar.renderCalendar(this.onGetNumberDays, this.onGetMonthName, this.onGetNamedDays);
+    this.console();
+  }
+
+  async console() {
+    const rowData = await this.dataManager.getRowData();
+    const data = await this.dataManager.getProceedData()
+    console.log(rowData);
+    console.log(data);
   }
 }
-
 
 const app = new App();
 app.init();

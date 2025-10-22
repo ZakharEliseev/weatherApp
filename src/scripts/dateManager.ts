@@ -56,4 +56,8 @@ export class DateInfo {
   getMonth(): string {
     return Month[this.month];
   }
+
+  getLocalTime(time: string) {
+
+  }
 }
