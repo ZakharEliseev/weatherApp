@@ -34,7 +34,7 @@ export class DateInfo {
     this.numberDays = [];
   }
 
-  getNamedDays() {
+  getNamedDays(): Array<string> {
     for (let i = 0; i < 5; i++) {
       const tomorrow = this.date.add(i, 'day');
       const capitalize =
@@ -44,7 +44,7 @@ export class DateInfo {
     return this.namedDays;
   }
 
-  getNumbersDays() {
+  getNumbersDays(): Array<number> {
     for (let i = 0; i < 5; i++) {
       const day = this.date.add(i, 'day');
       const dayNumber = day.date();
@@ -53,7 +53,7 @@ export class DateInfo {
     return this.numberDays
   }
 
-  getMonth() {
+  getMonth(): string {
     return Month[this.month];
   }
 }
