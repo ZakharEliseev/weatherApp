@@ -33,9 +33,12 @@ class App {
   };
 
   getInputValue() {
-    return this.input.value ? this.input.value : 'Москва'
+    return this.input.value ? this.input.value : 'Москва';
   }
 
+  onGetHours = (hours: string): string => {
+    return this.date.getЕTime(hours);
+  };
   async init() {
     this.form.addEventListener('submit', async (e) => {
       if (this.input.value.length === 0) {
@@ -45,18 +48,14 @@ class App {
       this.weatherManager.rendCityName(this.getInputValue());
       e.preventDefault();
       this.weatherManager.renderWeather(
-        await this.dataManager.getFormattedData(this.getInputValue()),
+        await this.dataManager.getForecast(this.getInputValue()),
+        this.onGetHours,
       );
-      await this.console();
       this.input.value = '';
     });
     this.calendar.renderCalendar(this.onGetNumberDays, this.onGetMonthName, this.onGetNamedDays);
   }
 
-  async console() {
-    const data = await this.dataManager.getFormattedData(this.getInputValue());
-    console.log(data);
-  }
 }
 
 const app = new App();

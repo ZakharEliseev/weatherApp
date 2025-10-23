@@ -6,6 +6,7 @@ import weekday from 'dayjs/plugin/weekday';
 dayjs.locale('ru');
 dayjs.extend(weekday);
 
+
 const Month: { [key: string]: string } = {
   1: 'Января',
   2: 'Февраля',
@@ -35,7 +36,7 @@ export class DateInfo {
   }
 
   getNamedDays(): Array<string> {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       const tomorrow = this.date.add(i, 'day');
       const capitalize =
         tomorrow.format('dddd')[0].toUpperCase() + tomorrow.format('dddd').slice(1);
@@ -45,7 +46,7 @@ export class DateInfo {
   }
 
   getNumbersDays(): Array<number> {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       const day = this.date.add(i, 'day');
       const dayNumber = day.date();
       this.numberDays.push(dayNumber);
@@ -57,7 +58,9 @@ export class DateInfo {
     return Month[this.month];
   }
 
-  getLocalTime(time: string) {
-
+  getЕTime(data: string): string {
+    const time = dayjs(data).format('HH:mm');
+    return time;
   }
+
 }
