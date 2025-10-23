@@ -1,10 +1,14 @@
 import 'dayjs/locale/ru';
 
 import dayjs, { Dayjs } from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import weekday from 'dayjs/plugin/weekday';
 
 dayjs.locale('ru');
 dayjs.extend(weekday);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 
 const Month: { [key: string]: string } = {
@@ -51,16 +55,32 @@ export class DateInfo {
       const dayNumber = day.date();
       this.numberDays.push(dayNumber);
     }
-    return this.numberDays
+    return this.numberDays;
   }
 
   getMonth(): string {
     return Month[this.month];
   }
 
-  getЕTime(data: string): string {
-    const time = dayjs(data).format('HH:mm');
+  getЕTime(timestamp: number): string {
+    const time = dayjs(timestamp * 1000).format('HH:mm');
+    const ttt = 1761242400;
+
+    console.log('Timestamp:', ttt);
+    console.log('Timestamp в ms:', ttt * 1000);
+
+    const date = new Date(ttt * 1000);
+    console.log('Date toString:', date.toString());
+    console.log('Date toUTCString:', date.toUTCString());
+    console.log('Date toISOString:', date.toISOString());
+
+    const dayjsTime = dayjs(ttt * 1000);
+    console.log('Dayjs format:', dayjsTime.format('HH:mm'));
+    console.log('Dayjs UTC:', dayjsTime.utc().format('HH:mm'));
+    console.log('Dayjs +05:00:', dayjsTime.utcOffset(5 * 60).format('HH:mm'));
+
+    console.log('Текущее время ПК:', dayjs().format('HH:mm'));
+    console.log('Часовой пояс ПК:', dayjs().format('Z'));
     return time;
   }
-
 }

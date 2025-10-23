@@ -17,13 +17,13 @@ export class WeatherManager {
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(data: any, hours: (time: string) => string) {
+  renderWeather(data: any, hours: (time: number) => number) {
     data.forEach((d: any, index: number) => {
       const template = this.templateWeatherItem.content.cloneNode(true);
       this.weatherBlock.append(template);
 
       const time = document.querySelectorAll('.weather-temp_time')[index] as HTMLParagraphElement;
-      time.textContent = hours(d.time);
+      time.textContent = hours(d.time).toString();
 
       const degree = document.querySelectorAll('.weather-temp_degree')[index] as HTMLHeadElement;
       degree.textContent = d.temp + ' °C';

@@ -23,15 +23,15 @@ export class DataManager {
     const response = await this.getData(city);
     for (let i=0; i < response.list.length; i++) {
         const forecast = {
-        cityName: response.city.name,
-        time: response.list[i].dt_txt,
-        temp: Math.ceil(response.list[i].main.temp),
-        weatherDescription: response.list[i].weather[0].description,
-        weatherIcon: response.list[i].weather[0].icon,
-        wind: Math.ceil(response.list[i].wind.speed),
-        pressure: Math.ceil(response.list[i].main.pressure / 1.33),
-        humidity: response.list[i].main.humidity,
-        }
+          cityName: response.city.name,
+          time: response.list[i].dt,
+          temp: Math.ceil(response.list[i].main.temp),
+          weatherDescription: response.list[i].weather[0].description,
+          weatherIcon: response.list[i].weather[0].icon,
+          wind: Math.ceil(response.list[i].wind.speed),
+          pressure: Math.ceil(response.list[i].main.pressure / 1.33),
+          humidity: response.list[i].main.humidity,
+        };
         this.forecast.push(forecast);
     }
     return this.forecast;
