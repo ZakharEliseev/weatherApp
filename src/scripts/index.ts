@@ -46,7 +46,18 @@ class App {
     return this.dateService.getTimeStamp();
   };
 
+  onGetFirstTimestamp(): any {
+    return (this.calendarElement.children[0] as HTMLLIElement).dataset.timestamp;
+  }
+
   async init() {
+    this.calendar.renderCalendar(
+      this.onGetNumberDays,
+      this.onGetMonthName,
+      this.onGetNamedDays,
+      this.onGetTimeStamp,
+    );
+
     this.form.addEventListener('submit', async (e) => {
       if (this.input.value.length === 0) {
         alert('Заполните поле!');
@@ -62,19 +73,14 @@ class App {
       // await this.print();
       this.input.value = '';
     });
-    this.calendar.renderCalendar(
-      this.onGetNumberDays,
-      this.onGetMonthName,
-      this.onGetNamedDays,
-      this.onGetTimeStamp,
-    );
-    // this.calendarElement.addEventListener('click', (e) => {
-    //   const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
-    //   const timestamp = item.getAttribute('data-timestamp');
-    //   this.calendar.deleteClassActiveDay();
-    //   item.classList.add('active-date')
-    //   console.log(timestamp)
-    // });
+
+    this.calendarElement.addEventListener('click', (e) => {
+      const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
+      const timestamp = item.getAttribute('data-timestamp');
+      this.calendar.deleteClassActiveDay();
+      item.classList.add('active-date')
+      console.log(timestamp)
+    });
   }
 
   // async print() {

@@ -17,7 +17,7 @@ export class WeatherManager {
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(data: any, hours: (time: string) => string, onCheckIsToday: (check: number) => boolean) {
+  renderWeather(data: any, hours: (time: string) => string, onCheckIsToday: ( check: number) => boolean) {
     data.forEach((d: any, index: number) => {
       if (onCheckIsToday(d.timestamp)) {
         const template = this.templateWeatherItem.content.cloneNode(true);
