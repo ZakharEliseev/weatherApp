@@ -52,6 +52,7 @@ class App {
         await this.dataService.getForecast(this.getInputValue()),
         this.onGetHours,
       );
+      await this.console();
       this.input.value = '';
       this.console()
     });
@@ -59,8 +60,17 @@ class App {
   }
 
   async console() {
+<<<<<<< Updated upstream
     console.log(await this.dataService.getF());
   }
+=======
+    const data = await this.dataManager.getF();
+    const dataU = await this.dataManager.getData(this.getInputValue());
+    console.log(data);
+    console.log(dataU);
+  }
+
+>>>>>>> Stashed changes
 }
 
 const app = new App();
