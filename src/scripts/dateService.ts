@@ -1,15 +1,17 @@
 import 'dayjs/locale/ru';
 
 import dayjs, { Dayjs } from 'dayjs';
+import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import weekday from 'dayjs/plugin/weekday';
+
 
 dayjs.locale('ru');
 dayjs.extend(weekday);
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
+dayjs.extend(isToday);
 
 const Month: { [key: string]: string } = {
   1: 'Января',
@@ -62,25 +64,29 @@ export class DateInfo {
     return Month[this.month];
   }
 
-  getЕTime(timestamp: number): string {
-    const time = dayjs(timestamp * 1000).format('HH:mm');
-    const ttt = 1761242400;
-
-    console.log('Timestamp:', ttt);
-    console.log('Timestamp в ms:', ttt * 1000);
-
-    const date = new Date(ttt * 1000);
-    console.log('Date toString:', date.toString());
-    console.log('Date toUTCString:', date.toUTCString());
-    console.log('Date toISOString:', date.toISOString());
-
-    const dayjsTime = dayjs(ttt * 1000);
-    console.log('Dayjs format:', dayjsTime.format('HH:mm'));
-    console.log('Dayjs UTC:', dayjsTime.utc().format('HH:mm'));
-    console.log('Dayjs +05:00:', dayjsTime.utcOffset(5 * 60).format('HH:mm'));
-
-    console.log('Текущее время ПК:', dayjs().format('HH:mm'));
-    console.log('Часовой пояс ПК:', dayjs().format('Z'));
+  getЕTime(timestamp: string): string {
+    const time = dayjs(timestamp).format('HH:mm');
     return time;
+  }
+
+  getTimeStamp(): number[] {
+    const timestamps: number[] = [];
+    for (let i = 0; i < 4; i++) {
+      const day = dayjs().add(i, 'day').startOf('day');
+      const timestamp = day.utc();
+      timestamps.push(Number(timestamp));
+    }
+    return timestamps;
+  }
+
+  getCurrentDay(baseDate: number, checkDate: number): boolean {
+    const base = dayjs.utc(baseDate);
+    const check = dayjs.utc(checkDate * 1000);
+    return check.isSame(base, 'day');
+  }
+
+  isToday(checkDate: number): boolean {
+    const check = dayjs.utc(checkDate * 1000);
+    return check.isToday();
   }
 }

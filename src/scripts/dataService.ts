@@ -24,7 +24,8 @@ export class DataManager {
     for (let i=0; i < response.list.length; i++) {
         const forecast = {
           cityName: response.city.name,
-          time: response.list[i].dt,
+          timestamp: parseInt(response.list[i].dt),
+          time: response.list[i].dt_txt,
           temp: Math.ceil(response.list[i].main.temp),
           weatherDescription: response.list[i].weather[0].description,
           weatherIcon: response.list[i].weather[0].icon,

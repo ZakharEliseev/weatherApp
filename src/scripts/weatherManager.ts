@@ -17,9 +17,10 @@ export class WeatherManager {
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(data: any, hours: (time: number) => number) {
+  renderWeather(data: any, hours: (time: string) => string, onCheckIsToday: (check: number) => boolean) {
     data.forEach((d: any, index: number) => {
-      const template = this.templateWeatherItem.content.cloneNode(true);
+      if (onCheckIsToday(d.timestamp)) {
+        const template = this.templateWeatherItem.content.cloneNode(true);
       this.weatherBlock.append(template);
 
       const time = document.querySelectorAll('.weather-temp_time')[index] as HTMLParagraphElement;
@@ -46,6 +47,7 @@ export class WeatherManager {
         '.weather-humidity_metric',
       )[index] as HTMLParagraphElement;
       humidity.textContent = d.humidity + ' %';
+      }
     })
 
   }

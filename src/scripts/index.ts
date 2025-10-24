@@ -6,6 +6,7 @@ import { WeatherManager } from './weatherManager';
 class App {
   private form: HTMLFormElement;
   private input: HTMLInputElement;
+  private calendarElement: HTMLUListElement;
   private calendar = new Calendar();
   private dateService = new DateInfo();
   private dataService = new DataManager();
@@ -14,6 +15,7 @@ class App {
   constructor() {
     this.form = document.querySelector('.weather-form') as HTMLFormElement;
     this.input = document.querySelector('.weather-form__input') as HTMLInputElement;
+    this.calendarElement = document.querySelector('.calendar') as HTMLUListElement;
   }
 
   onGetNumberDays = (): Array<number> => {
@@ -28,16 +30,20 @@ class App {
     return this.dateService.getNamedDays();
   };
 
-  onGetCityName = (): string => {
-    return this.input.value;
+  onGetHours = (hours: string): string => {
+    return this.dateService.getЕTime(hours);
   };
 
-  getInputValue() {
-    return this.input.value ? this.input.value : 'Москва';
-  }
+  onGetToday = (checkDay: number): boolean => {
+    return this.dateService.isToday(checkDay);
+  };
 
-  onGetHours = (hours: number): string => {
-    return this.dateService.getЕTime(hours);
+  onCheckIsToday = (baseDate: number, checkDate: number): boolean => {
+    return this.dateService.getCurrentDay(baseDate, checkDate);
+  };
+
+  onGetTimeStamp = (): number[] => {
+    return this.dateService.getTimeStamp();
   };
 
   async init() {
@@ -46,31 +52,37 @@ class App {
         alert('Заполните поле!');
         e.preventDefault();
       }
-      this.weatherManager.rendCityName(this.getInputValue());
+      this.weatherManager.rendCityName(this.input.value);
       e.preventDefault();
       this.weatherManager.renderWeather(
-        await this.dataService.getForecast(this.getInputValue()),
+        await this.dataService.getForecast(this.input.value),
         this.onGetHours,
+        this.onGetToday,
       );
-      await this.console();
+      // await this.print();
       this.input.value = '';
-      this.console()
     });
-    this.calendar.renderCalendar(this.onGetNumberDays, this.onGetMonthName, this.onGetNamedDays);
+    this.calendar.renderCalendar(
+      this.onGetNumberDays,
+      this.onGetMonthName,
+      this.onGetNamedDays,
+      this.onGetTimeStamp,
+    );
+    // this.calendarElement.addEventListener('click', (e) => {
+    //   const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
+    //   const timestamp = item.getAttribute('data-timestamp');
+    //   this.calendar.deleteClassActiveDay();
+    //   item.classList.add('active-date')
+    //   console.log(timestamp)
+    // });
   }
 
-  async console() {
-<<<<<<< Updated upstream
-    console.log(await this.dataService.getF());
-  }
-=======
-    const data = await this.dataManager.getF();
-    const dataU = await this.dataManager.getData(this.getInputValue());
-    console.log(data);
-    console.log(dataU);
-  }
-
->>>>>>> Stashed changes
+  // async print() {
+  //   const data = await this.dataService.getF();
+  //   const dataU = await this.dataService.getData(this.input.value);
+  //   console.log(data);
+  //   console.log(dataU);
+  // }
 }
 
 const app = new App();
