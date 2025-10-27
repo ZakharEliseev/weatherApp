@@ -14,7 +14,6 @@ class App {
   constructor() {
     this.form = document.querySelector('.weather-form') as HTMLFormElement;
     this.input = document.querySelector('.weather-form__input') as HTMLInputElement;
-    this.calendarElement = document.querySelector('.calendar') as HTMLUListElement;
   }
 
   onGetForecast = (): Promise<any[]> => {
@@ -33,20 +32,15 @@ class App {
     return this.dateService.getWeekday(weekday);
   };
 
-
   init() {
-    this.form.addEventListener('submit', (e) => {
+    this.form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (this.input.value.length === 0) {
         alert('Заполните поле!');
         return;
       }
-      this.calendarManager.renderCalendar(
-        this.onGetForecast,
-        this.onGetDate,
-        this.onGetMonth,
-        this.onGetWeekday,
-      );
+      const list: any[] = await this.dataManager.getForecast(this.input.value);
+      this.calendarManager.renderCalendar(list, this.onGetDate, this.onGetMonth, this.onGetWeekday);
     });
     // this.calendarManager.renderCalendar(this.onGetForecast);
 

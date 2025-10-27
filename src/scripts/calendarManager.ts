@@ -13,14 +13,13 @@ export class CalendarService {
     });
   }
 
-  async renderCalendar(
-    forecast: () => Promise<any[]>,
+  renderCalendar(
+    forecast: any[],
     getDate: (day: string) => string,
     getMonth: (month: string) => string,
     getWeekday: (month: string) => string
   ) {
-    const data = await forecast();
-    const days = Object.keys(data);
+    const days = Object.keys(forecast);
     days.forEach((d) => {
       const li: HTMLLIElement = document.createElement('li');
       li.classList.add('calendar-item');
