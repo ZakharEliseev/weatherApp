@@ -46,7 +46,7 @@ class App {
     return this.dateService.getTimeStamp();
   };
 
-  async init() {
+  init() {
     this.calendar.renderCalendar(
       this.onGetNumberDays,
       this.onGetMonthName,
