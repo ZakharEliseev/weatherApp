@@ -1,51 +1,35 @@
 import axios from 'axios';
 
-import { Config } from '../../config';
-
-
 export class DataManager {
-  private config = new Config();
-  private cacheData: any = null;
-  private forecast: any = [];
 
-  clearCache() {
-    this.cacheData = null;
-    this.forecast = [];
-  }
-
-  async fetchDataOW(url: string): Promise<any> {
-    const response = await axios.get(url);
-    return response.data;
-  }
-
-  async getDataFromCache(city: string): Promise<any> {
-    if (!this.cacheData) {
-      const response = await this.fetchDataOW(this.config.getForecastFromOW(city));
-      this.cacheData = response;
-      return this.cacheData;
-    }
-    return this.cacheData;
-  }
-
-  async getForecast(city: string): Promise<[]> {
-    this.clearCache();
-    const response = await this.getDataFromCache(city);
-    console.log(response)
-    response.list.forEach((item: any) => {
-      const forecast = {
-        cityName: response.city.name,
-        timestamp: parseInt(item.dt),
-        time: item.dt_txt,
-        temp: Math.ceil(item.main.temp),
-        weatherDescription: item.weather[0].description,
-        weatherIcon: item.weather[0].icon,
-        wind: Math.ceil(item.wind.speed),
-        pressure: Math.ceil(item.main.pressure / 1.33),
-        humidity: item.main.humidity,
-      };
-      this.forecast.push(forecast);
+  fetchData(city: string): Promise<any> {
+    return axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
+      params: {
+        q: city,
+        appid: import.meta.env.VITE_OPENWEATHER_API_KEY,
+        units: 'metric',
+        lang: 'ru',
+      },
     });
+  }
 
-    return this.forecast;
+  async getForecast(city: string): Promise<any[]> {
+    try {
+      const {data} = await this.fetchData(city);
+      return data.list.map((item: any) => ({
+          cityName: data.city.name,
+          timestamp: parseInt(item.dt),
+          time: item.dt_txt,
+          temp: Math.ceil(item.main.temp),
+          weatherDescription: item.weather[0].description,
+          weatherIcon: item.weather[0].icon,
+          wind: Math.ceil(item.wind.speed),
+          pressure: Math.ceil(item.main.pressure / 1.33),
+          humidity: item.main.humidity,
+      }));
+    } catch(error) {
+      console.log('Error', error);
+      return []
+    }
   }
 }
