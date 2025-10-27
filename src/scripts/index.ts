@@ -24,7 +24,7 @@ class App {
         alert('Заполните поле!');
         return;
       }
-      const list: any[] = await this.dataManager.getForecast(this.input.value);
+      const list = await this.dataManager.getForecast(this.input.value);
       this.calendarManager.renderCalendar(
         list,
         this.dateService.getDate,
@@ -32,27 +32,7 @@ class App {
         this.dateService.getWeekday,
       );
     });
-    // this.calendarManager.renderCalendar(this.onGetForecast);
 
-    // this.form.addEventListener('submit', async (e) => {
-    //   if (this.input.value.length === 0) {
-    //     alert('Заполните поле!');
-    //     e.preventDefault();
-    //   }
-    //   this.weatherManager.renderCityName(this.input.value);
-    //   e.preventDefault();
-    //   this.weatherManager.renderWeather(
-    //     await this.dataService.getForecast(this.input.value),
-    //     this.onGetHours,
-    //   );
-    //   this.input.value = '';
-    // });
-
-    // this.calendarElement.addEventListener('click', (e) => {
-    //   const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
-    //   this.calendar.deleteClassActiveDay();
-    //   item.classList.add('active-date');
-    // });
   }
 }
 

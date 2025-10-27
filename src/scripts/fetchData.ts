@@ -23,7 +23,7 @@ type GroupedForecast = {
 };
 
 export class DataManager {
-  private forecast: Promise<any[]> | null = null;
+  private forecast = {};
 
   async fetchData(city: string): Promise<ForecastResponse[]> {
     try {
@@ -43,9 +43,9 @@ export class DataManager {
     }
   }
 
-  async getFormattedData(city: string): Promise<any[]> {
+  async getForecast(city: string): Promise<any> {
     const list = await this.fetchData(city);
-    return list?.reduce((acc: any, item: any) => {
+    this.forecast = list?.reduce((acc: any, item: any) => {
       const date = dayjs(item.dt_txt).format('YYYY-MM-DD');
       const time = dayjs(item.dt_txt).format('HH:mm');
 
@@ -61,12 +61,10 @@ export class DataManager {
 
       if (!acc[date]) acc[date] = [];
       acc[date].push(entry);
-      return acc;
     }, {});
   }
 
-  getForecast(city: string): Promise<any[]> {
-    this.forecast = this.getFormattedData(city);
+  getData() {
     return this.forecast;
   }
 }
