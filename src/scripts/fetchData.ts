@@ -8,46 +8,43 @@ export class DataManager {
   private cacheData: any = null;
   private forecast: any = [];
 
-  async fetchDataOW(url: string): Promise<any> {
-      const response = await axios.get(url);
-      return response.data; 
-  }
   clearCache() {
     this.cacheData = null;
+    this.forecast = [];
   }
-  
-  async getData(city: string): Promise<any> {
+
+  async fetchDataOW(url: string): Promise<any> {
+    const response = await axios.get(url);
+    return response.data;
+  }
+
+  async getDataFromCache(city: string): Promise<any> {
     if (!this.cacheData) {
       const response = await this.fetchDataOW(this.config.getForecastFromOW(city));
       this.cacheData = response;
       return this.cacheData;
     }
     return this.cacheData;
-    
   }
 
   async getForecast(city: string): Promise<[]> {
-    this.forecast = [];
-    const response = await this.getData(city);
-    for (let i=0; i < response.list.length; i++) {
-        const forecast = {
-          cityName: response.city.name,
-          timestamp: parseInt(response.list[i].dt),
-          time: response.list[i].dt_txt,
-          temp: Math.ceil(response.list[i].main.temp),
-          weatherDescription: response.list[i].weather[0].description,
-          weatherIcon: response.list[i].weather[0].icon,
-          wind: Math.ceil(response.list[i].wind.speed),
-          pressure: Math.ceil(response.list[i].main.pressure / 1.33),
-          humidity: response.list[i].main.humidity,
-        };
-        this.forecast.push(forecast);
-    }
+    this.clearCache();
+    const response = await this.getDataFromCache(city);
+    response.list.forEach((item: any) => {
+      const forecast = {
+        cityName: response.city.name,
+        timestamp: parseInt(item.dt),
+        time: item.dt_txt,
+        temp: Math.ceil(item.main.temp),
+        weatherDescription: item.weather[0].description,
+        weatherIcon: item.weather[0].icon,
+        wind: Math.ceil(item.wind.speed),
+        pressure: Math.ceil(item.main.pressure / 1.33),
+        humidity: item.main.humidity,
+      };
+      this.forecast.push(forecast);
+    });
+
     return this.forecast;
   }
-
-  getF() {
-    return this.forecast;
-  }
-
 }

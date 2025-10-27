@@ -64,7 +64,7 @@ export class DateInfo {
     return Month[this.month];
   }
 
-  getЕTime(timestamp: string): string {
+  getHours(timestamp: string): string {
     const time = dayjs(timestamp).format('HH:mm');
     return time;
   }
@@ -79,11 +79,11 @@ export class DateInfo {
     return timestamps;
   }
 
-  getCurrentDay(baseDate: number, checkDate: number): boolean {
-    const base = dayjs.utc(baseDate);
-    const check = dayjs.utc(checkDate * 1000);
-    return check.isSame(base, 'day');
-  }
+  // getCurrentDay(baseDate: number, checkDate: number): boolean {
+  //   const base = dayjs.utc(baseDate);
+  //   const check = dayjs.utc(checkDate * 1000);
+  //   return check.isSame(base, 'day');
+  // }
 
   isToday(checkDate: number): boolean {
     const check = dayjs.utc(checkDate * 1000);

@@ -11,7 +11,7 @@ export class WeatherManager {
     ) as HTMLTemplateElement;
   }
 
-  rendCityName(cityName: string) {
+  renderCityName(cityName: string) {
     const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
@@ -20,9 +20,7 @@ export class WeatherManager {
     data: any,
     hours: (time: string) => string,
     onCheckIsToday: (check: number) => boolean,
-    clear: () => void
   ) {
-    clear();
     this.weatherBlock.replaceChildren();
     data.forEach((d: any) => {
       if (onCheckIsToday(d.timestamp)) {

@@ -31,28 +31,20 @@ class App {
   };
 
   onGetHours = (hours: string): string => {
-    return this.dateService.getЕTime(hours);
+    return this.dateService.getHours(hours);
   };
 
   onGetToday = (checkDay: number): boolean => {
     return this.dateService.isToday(checkDay);
   };
 
-  onCheckIsToday = (baseDate: number, checkDate: number): boolean => {
-    return this.dateService.getCurrentDay(baseDate, checkDate);
-  };
+  // onCheckIsToday = (baseDate: number, checkDate: number): boolean => {
+  //   return this.dateService.getCurrentDay(baseDate, checkDate);
+  // };
 
   onGetTimeStamp = (): number[] => {
     return this.dateService.getTimeStamp();
   };
-
-  onGetFirstTimestamp(): any {
-    return (this.calendarElement.children[0] as HTMLLIElement).dataset.timestamp;
-  }
-
-  onClearCache = (): void => {
-    this.dataService.clearCache();
-  }
 
   async init() {
     this.calendar.renderCalendar(
@@ -67,33 +59,24 @@ class App {
         alert('Заполните поле!');
         e.preventDefault();
       }
-      this.weatherManager.rendCityName(this.input.value);
+      this.weatherManager.renderCityName(this.input.value);
       e.preventDefault();
       this.weatherManager.renderWeather(
         await this.dataService.getForecast(this.input.value),
         this.onGetHours,
         this.onGetToday,
-        this.onClearCache,
       );
-      // await this.print();
       this.input.value = '';
     });
 
     this.calendarElement.addEventListener('click', (e) => {
       const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
-      const timestamp = item.getAttribute('data-timestamp');
+      // const timestamp = item.getAttribute('data-timestamp');
       this.calendar.deleteClassActiveDay();
       item.classList.add('active-date')
-      console.log(timestamp)
     });
   }
 
-  // async print() {
-  //   const data = await this.dataService.getF();
-  //   const dataU = await this.dataService.getData(this.input.value);
-  //   console.log(data);
-  //   console.log(dataU);
-  // }
 }
 
 const app = new App();
