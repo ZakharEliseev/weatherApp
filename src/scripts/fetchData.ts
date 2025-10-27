@@ -12,7 +12,10 @@ export class DataManager {
       const response = await axios.get(url);
       return response.data; 
   }
-
+  clearCache() {
+    this.cacheData = null;
+  }
+  
   async getData(city: string): Promise<any> {
     if (!this.cacheData) {
       const response = await this.fetchDataOW(this.config.getForecastFromOW(city));
@@ -24,6 +27,7 @@ export class DataManager {
   }
 
   async getForecast(city: string): Promise<[]> {
+    this.forecast = [];
     const response = await this.getData(city);
     for (let i=0; i < response.list.length; i++) {
         const forecast = {

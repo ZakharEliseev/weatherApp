@@ -1,6 +1,6 @@
 import { Calendar } from './calendarManager';
-import { DataManager } from './fetchData';
 import { DateInfo } from './dateService';
+import { DataManager } from './fetchData';
 import { WeatherManager } from './weatherManager';
 
 class App {
@@ -50,6 +50,10 @@ class App {
     return (this.calendarElement.children[0] as HTMLLIElement).dataset.timestamp;
   }
 
+  onClearCache = (): void => {
+    this.dataService.clearCache();
+  }
+
   async init() {
     this.calendar.renderCalendar(
       this.onGetNumberDays,
@@ -69,6 +73,7 @@ class App {
         await this.dataService.getForecast(this.input.value),
         this.onGetHours,
         this.onGetToday,
+        this.onClearCache,
       );
       // await this.print();
       this.input.value = '';

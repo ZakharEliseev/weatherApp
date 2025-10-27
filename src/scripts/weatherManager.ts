@@ -11,44 +11,46 @@ export class WeatherManager {
     ) as HTMLTemplateElement;
   }
 
-
   rendCityName(cityName: string) {
     const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(data: any, hours: (time: string) => string, onCheckIsToday: ( check: number) => boolean) {
-    data.forEach((d: any, index: number) => {
+  renderWeather(
+    data: any,
+    hours: (time: string) => string,
+    onCheckIsToday: (check: number) => boolean,
+    clear: () => void
+  ) {
+    clear();
+    this.weatherBlock.replaceChildren();
+    data.forEach((d: any) => {
       if (onCheckIsToday(d.timestamp)) {
-        const template = this.templateWeatherItem.content.cloneNode(true);
-      this.weatherBlock.append(template);
+        const template = this.templateWeatherItem.content.cloneNode(true) as DocumentFragment;
 
-      const time = document.querySelectorAll('.weather-temp_time')[index] as HTMLParagraphElement;
-      time.textContent = hours(d.time).toString();
+        const time = template.querySelector('.weather-temp_time') as HTMLParagraphElement;
+        time.textContent = hours(d.time);
 
-      const degree = document.querySelectorAll('.weather-temp_degree')[index] as HTMLHeadElement;
-      degree.textContent = d.temp + ' °C';
+        const degree = template.querySelector('.weather-temp_degree') as HTMLHeadElement;
+        degree.textContent = d.temp + ' °C';
 
-      const description = document.querySelectorAll('.weather-descr-text')[index] as HTMLDivElement;
-      description.textContent = d.weatherDescription;
+        const description = template.querySelector('.weather-descr-text') as HTMLDivElement;
+        description.textContent = d.weatherDescription;
 
-      const icon = document.querySelectorAll('.weather-descr_icon')[index] as HTMLImageElement;
-      icon.src = `./src/img/icons/${d.weatherIcon}@2x.png`;
+        const icon = template.querySelector('.weather-descr_icon') as HTMLImageElement;
+        icon.src = `./src/img/icons/${d.weatherIcon}@2x.png`;
 
-      const wind = document.querySelectorAll('.weather-wind_metric')[index] as HTMLParagraphElement;
-      wind.textContent = d.wind + ' м\\с';
+        const wind = template.querySelector('.weather-wind_metric') as HTMLParagraphElement;
+        wind.textContent = d.wind + ' м/с';
 
-      const pressure = document.querySelectorAll(
-        '.weather-pressure_metric',
-      )[index] as HTMLParagraphElement;
-      pressure.textContent = d.pressure + ' мм рт.';
+        const pressure = template.querySelector('.weather-pressure_metric') as HTMLParagraphElement;
+        pressure.textContent = d.pressure + ' мм рт.';
 
-      const humidity = document.querySelectorAll(
-        '.weather-humidity_metric',
-      )[index] as HTMLParagraphElement;
-      humidity.textContent = d.humidity + ' %';
+        const humidity = template.querySelector('.weather-humidity_metric') as HTMLParagraphElement;
+        humidity.textContent = d.humidity + ' %';
+
+        this.weatherBlock.append(template);
       }
-    })
-
+    });
   }
 }
