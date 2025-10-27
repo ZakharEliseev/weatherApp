@@ -1,5 +1,5 @@
 import { Calendar } from './calendarManager';
-import { DataManager } from './dataService';
+import { DataManager } from './fetchData';
 import { DateInfo } from './dateService';
 import { WeatherManager } from './weatherManager';
 

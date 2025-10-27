@@ -1,12 +1,16 @@
+import axios from 'axios';
+
 import { Config } from '../../config';
+
+
 export class DataManager {
   private config = new Config();
   private cacheData: any = null;
   private forecast: any = [];
 
   async fetchDataOW(url: string): Promise<any> {
-    const response = await fetch(url);
-    return response.json();
+      const response = await axios.get(url);
+      return response.data; 
   }
 
   async getData(city: string): Promise<any> {
