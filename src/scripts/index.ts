@@ -1,15 +1,14 @@
 import { CalendarService } from './calendarManager';
-import { DateInfo } from './dateService';
+import { DateService } from './dateService';
 import { DataManager } from './fetchData';
 import { WeatherManager } from './weatherManager';
 
 class App {
   private form: HTMLFormElement;
   private input: HTMLInputElement;
-  private calendarElement: HTMLUListElement;
-  private calendar = new CalendarService();
-  private dateService = new DateInfo();
-  private dataService = new DataManager();
+  private calendarManager = new CalendarService();
+  private dateService = new DateService();
+  private dataManager = new DataManager();
   private weatherManager = new WeatherManager();
 
   constructor() {
@@ -18,62 +17,58 @@ class App {
     this.calendarElement = document.querySelector('.calendar') as HTMLUListElement;
   }
 
-  onGetNumberDays = (): Array<number> => {
-    return this.dateService.getNumbersDays();
+  onGetForecast = (): Promise<any[]> => {
+    return this.dataManager.getForecast(this.input.value);
   };
 
-  onGetMonthName = (): string => {
-    return this.dateService.getMonth();
+  onGetDate = (day: string): string => {
+    return this.dateService.getDate(day);
   };
 
-  onGetNamedDays = (): Array<string> => {
-    return this.dateService.getNamedDays();
+  onGetMonth = (month: string): string => {
+    return this.dateService.getMonth(month);
   };
 
-  onGetHours = (hours: string): string => {
-    return this.dateService.getHours(hours);
+  onGetWeekday = (weekday: string): string => {
+    return this.dateService.getWeekday(weekday);
   };
 
-  // onGetToday = (checkDay: number): boolean => {
-  //   return this.dateService.isToday(checkDay);
-  // };
-
-  // onCheckIsToday = (baseDate: number, checkDate: number): boolean => {
-  //   return this.dateService.getCurrentDay(baseDate, checkDate);
-  // };
-
-  onGetTimeStamp = (): number[] => {
-    return this.dateService.getTimeStamp();
-  };
 
   init() {
-    this.calendar.renderCalendar(
-      this.onGetNumberDays,
-      this.onGetMonthName,
-      this.onGetNamedDays,
-      this.onGetTimeStamp,
-    );
-
-    this.form.addEventListener('submit', async (e) => {
+    this.form.addEventListener('submit', (e) => {
+      e.preventDefault();
       if (this.input.value.length === 0) {
         alert('Заполните поле!');
-        e.preventDefault();
+        return;
       }
-      this.weatherManager.renderCityName(this.input.value);
-      e.preventDefault();
-      this.weatherManager.renderWeather(
-        await this.dataService.getForecast(this.input.value),
-        this.onGetHours,
+      this.calendarManager.renderCalendar(
+        this.onGetForecast,
+        this.onGetDate,
+        this.onGetMonth,
+        this.onGetWeekday,
       );
-      this.input.value = '';
     });
+    // this.calendarManager.renderCalendar(this.onGetForecast);
 
-    this.calendarElement.addEventListener('click', (e) => {
-      const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
-      // const timestamp = item.getAttribute('data-timestamp');
-      this.calendar.deleteClassActiveDay();
-      item.classList.add('active-date');
-    });
+    // this.form.addEventListener('submit', async (e) => {
+    //   if (this.input.value.length === 0) {
+    //     alert('Заполните поле!');
+    //     e.preventDefault();
+    //   }
+    //   this.weatherManager.renderCityName(this.input.value);
+    //   e.preventDefault();
+    //   this.weatherManager.renderWeather(
+    //     await this.dataService.getForecast(this.input.value),
+    //     this.onGetHours,
+    //   );
+    //   this.input.value = '';
+    // });
+
+    // this.calendarElement.addEventListener('click', (e) => {
+    //   const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
+    //   this.calendar.deleteClassActiveDay();
+    //   item.classList.add('active-date');
+    // });
   }
 }
 

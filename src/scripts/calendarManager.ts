@@ -1,5 +1,3 @@
-const MAX_DAYS = 4;
-
 export class CalendarService {
   private calendarBlock: HTMLDivElement;
   private calendarItems: NodeListOf<HTMLLIElement>;
@@ -15,33 +13,67 @@ export class CalendarService {
     });
   }
 
-  renderCalendar(
-    numberDays: () => Array<number>,
-    monthName: () => string,
-    namedDays: () => Array<string>,
-    timestamp: () => Array<number>,
+  async renderCalendar(
+    forecast: () => Promise<any[]>,
+    getDate: (day: string) => string,
+    getMonth: (month: string) => string,
+    getWeekday: (month: string) => string
   ) {
-    const day: NodeListOf<HTMLHeadingElement> = document.querySelectorAll(
-      '.calendar-day',
-    ) as NodeListOf<HTMLHeadingElement>;
+    const data = await forecast();
+    const days = Object.keys(data);
+    days.forEach((d) => {
+      const li: HTMLLIElement = document.createElement('li');
+      li.classList.add('calendar-item');
 
-    const month: NodeListOf<HTMLParagraphElement> = document.querySelectorAll(
-      '.calendar-header_month',
-    ) as NodeListOf<HTMLParagraphElement>;
+      const day: HTMLHeadingElement = document.createElement('h2');
+      day.classList.add('calendar-day');
+      day.textContent = getDate(d);
+      li.append(day);
 
-    const weekDay: NodeListOf<HTMLParagraphElement> = document.querySelectorAll(
-      '.calendar-header_weekday',
-    ) as NodeListOf<HTMLParagraphElement>;
+      const dayHeader: HTMLDivElement = document.createElement('div');
+      dayHeader.classList.add('calendar-header');
+      li.append(dayHeader);
 
-    const item: NodeListOf<HTMLLIElement> = document.querySelectorAll(
-      '.calendar-item',
-    ) as NodeListOf<HTMLLIElement>;
-
-    [...this.calendarBlock.children].forEach((_, index) => {
-      item[index].dataset.timestamp = timestamp()[index].toString();
-      day[index].textContent = numberDays()[index].toString();
-      month[index].textContent = monthName();
-      weekDay[index].textContent = namedDays()[index].toString();
+      const month: HTMLParagraphElement = document.createElement('p');
+      month.classList.add('calendar-header_month');
+      month.textContent = getMonth(d);
+      
+      const weekday: HTMLParagraphElement = document.createElement('p');
+      weekday.classList.add('calendar-header_weekday');
+      weekday.textContent = getWeekday(d);
+      
+      dayHeader.append(month, weekday);
+      this.calendarBlock.append(li);
     });
   }
+
+  // renderCalendar(
+  //   numberDays: () => Array<number>,
+  //   monthName: () => string,
+  //   namedDays: () => Array<string>,
+  //   timestamp: () => Array<number>,
+  // ) {
+  //   const day: NodeListOf<HTMLHeadingElement> = document.querySelectorAll(
+  //     '.calendar-day',
+  //   ) as NodeListOf<HTMLHeadingElement>;
+
+  //   const month: NodeListOf<HTMLParagraphElement> = document.querySelectorAll(
+  //     '.calendar-header_month',
+  //   ) as NodeListOf<HTMLParagraphElement>;
+
+  //   const weekDay: NodeListOf<HTMLParagraphElement> = document.querySelectorAll(
+  //     '.calendar-header_weekday',
+  //   ) as NodeListOf<HTMLParagraphElement>;
+
+  //   const item: NodeListOf<HTMLLIElement> = document.querySelectorAll(
+  //     '.calendar-item',
+  //   ) as NodeListOf<HTMLLIElement>;
+
+  //   [...this.calendarBlock.children].forEach((_, index) => {
+  //     item[index].dataset.timestamp = timestamp()[index].toString();
+  //     day[index].textContent = numberDays()[index].toString();
+  //     month[index].textContent = monthName();
+  //     weekDay[index].textContent = namedDays()[index].toString();
+  //   });
+  // }
 }
