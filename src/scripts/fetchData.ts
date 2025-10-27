@@ -30,6 +30,7 @@ export class DataManager {
   async getForecast(city: string): Promise<[]> {
     this.clearCache();
     const response = await this.getDataFromCache(city);
+    console.log(response)
     response.list.forEach((item: any) => {
       const forecast = {
         cityName: response.city.name,

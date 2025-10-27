@@ -1,4 +1,4 @@
-import { Calendar } from './calendarManager';
+import { CalendarService } from './calendarManager';
 import { DateInfo } from './dateService';
 import { DataManager } from './fetchData';
 import { WeatherManager } from './weatherManager';
@@ -7,7 +7,7 @@ class App {
   private form: HTMLFormElement;
   private input: HTMLInputElement;
   private calendarElement: HTMLUListElement;
-  private calendar = new Calendar();
+  private calendar = new CalendarService();
   private dateService = new DateInfo();
   private dataService = new DataManager();
   private weatherManager = new WeatherManager();
@@ -34,9 +34,9 @@ class App {
     return this.dateService.getHours(hours);
   };
 
-  onGetToday = (checkDay: number): boolean => {
-    return this.dateService.isToday(checkDay);
-  };
+  // onGetToday = (checkDay: number): boolean => {
+  //   return this.dateService.isToday(checkDay);
+  // };
 
   // onCheckIsToday = (baseDate: number, checkDate: number): boolean => {
   //   return this.dateService.getCurrentDay(baseDate, checkDate);
@@ -64,7 +64,6 @@ class App {
       this.weatherManager.renderWeather(
         await this.dataService.getForecast(this.input.value),
         this.onGetHours,
-        this.onGetToday,
       );
       this.input.value = '';
     });
@@ -73,10 +72,9 @@ class App {
       const item = (e.target as Element).closest('.calendar-item') as HTMLLIElement;
       // const timestamp = item.getAttribute('data-timestamp');
       this.calendar.deleteClassActiveDay();
-      item.classList.add('active-date')
+      item.classList.add('active-date');
     });
   }
-
 }
 
 const app = new App();

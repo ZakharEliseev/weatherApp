@@ -1,4 +1,6 @@
-export class Calendar {
+const MAX_DAYS = 4;
+
+export class CalendarService {
   private calendarBlock: HTMLDivElement;
   private calendarItems: NodeListOf<HTMLLIElement>;
 
