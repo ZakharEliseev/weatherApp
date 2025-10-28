@@ -29,6 +29,7 @@ class App {
     }
     await this.weatherDataService.processWeatherData(this.cityInput.value);
     this.updateUi();
+    this.cityInput.value = '';
   };
 
   updateUi(): void {
