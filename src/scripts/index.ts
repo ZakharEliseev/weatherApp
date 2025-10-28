@@ -26,8 +26,7 @@ class App {
 
   updateUi(): void {
     const list = this.weatherDataService.getGroupedForecast();
-    this.uiManager.render(list);
-    this.uiManager.renderCityName(this.cityInput.value);
+    this.uiManager.render(list, this.cityInput.value);
   }
 
   init(): void {
