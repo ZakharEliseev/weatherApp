@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 
-import { DateFormatter } from './DateFormatter';
+import { DateFormatter } from './DateTimeService';
 import { GroupedForecast, WeatherEntry } from './WeatherDataService';
 
-export class UiManager {
+export class UiService {
   private weatherBlock: HTMLUListElement;
   private city: HTMLHeadingElement;
   private calendarBlock: HTMLDivElement;
@@ -16,6 +16,11 @@ export class UiManager {
     this.weatherBlock = document.querySelector('.weather') as HTMLUListElement;
     this.city = document.querySelector('.city') as HTMLHeadingElement;
   }
+  
+  render(forecast: GroupedForecast, cityName: string): void {
+    this.renderCalendar(forecast);
+    this.renderCityName(cityName);
+  }
 
   renderCityName(cityName: string): void {
     const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
@@ -27,11 +32,6 @@ export class UiManager {
       const element = day as HTMLLIElement;
       element.classList.toggle('active-date', element.dataset.timestamp === currentDay);
     });
-  }
-
-  render(forecast: GroupedForecast, cityName: string): void {
-    this.renderCalendar(forecast);
-    this.renderCityName(cityName)
   }
 
   renderCalendar(forecast: GroupedForecast): void {

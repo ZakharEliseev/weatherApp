@@ -1,10 +1,10 @@
-import { UiManager } from './UiManager';
+import { UiService } from './UiService';
 import { WeatherDataService } from './WeatherDataService';
 
 class App {
   private searchForm: HTMLFormElement;
   private cityInput: HTMLInputElement;
-  private uiManager = new UiManager();
+  private uiService = new UiService();
   private weatherDataService = new WeatherDataService();
 
   constructor() {
@@ -26,7 +26,7 @@ class App {
 
   updateUi(): void {
     const list = this.weatherDataService.getGroupedForecast();
-    this.uiManager.render(list, this.cityInput.value);
+    this.uiService.render(list, this.cityInput.value);
   }
 
   init(): void {
