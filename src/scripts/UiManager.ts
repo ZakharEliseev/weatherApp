@@ -10,6 +10,7 @@ export class UiManager {
   private calendarBlock: HTMLDivElement;
   private dateFormatter = new DateFormatter();
   private activeDay: string;
+
   constructor() {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
     this.activeDay = dayjs().format('YYYY-MM-DD');
@@ -30,6 +31,7 @@ export class UiManager {
       element.classList.toggle('active-date', element.dataset.timestamp === currentDay);
     });
   }
+  
   render(forecast: GroupedForecast): void {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
