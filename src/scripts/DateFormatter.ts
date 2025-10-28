@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 
 dayjs.locale('ru');
 
-
-
 const RUSSIAN_MONTHS: { [key: string]: string } = {
   1: 'Января',
   2: 'Февраля',

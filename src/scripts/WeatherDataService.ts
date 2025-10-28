@@ -63,7 +63,7 @@ export class WeatherDataService {
 
       if (!acc[date]) acc[date] = [];
       acc[date].push(entry);
-      return acc; // все таки надо было возвращать
+      return acc;
     }, {});
   }
 
