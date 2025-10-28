@@ -1,30 +1,38 @@
+import dayjs, { Dayjs } from 'dayjs';
+
 import { DateFormatter } from './DateFormatter';
 import { GroupedForecast, WeatherEntry } from './WeatherDataService';
-
 export class CalendarManager {
   private calendarBlock: HTMLDivElement;
   private dateFormatter = new DateFormatter();
-
+  private activeDay: string;
   constructor() {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
+    this.activeDay = dayjs().format('YYYY-MM-DD');
   }
 
   renderCalendar(forecast: GroupedForecast, cb: (weatherData: WeatherEntry[]) => void): void {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
+    
     days.forEach((d) => {
       const li: HTMLLIElement = document.createElement('li');
       li.dataset.timestamp = d;
       li.classList.add('calendar-item');
+      if (d === this.activeDay) {
+        li.classList.add('active-date');
+        cb(forecast[d])
+      }
       li.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLLIElement;
         this.removeActiveDay();
-        target.classList.add('active-date');
+        li.classList.add('active-date');
         const date = target.dataset.timestamp;
         if (date && forecast[date]) {
           cb(forecast[date]);
         }
       });
+
       const day: HTMLHeadingElement = document.createElement('h2');
       day.classList.add('calendar-day');
       day.textContent = this.dateFormatter.formatDate(d);
@@ -45,17 +53,6 @@ export class CalendarManager {
       dayHeader.append(month, weekday);
       this.calendarBlock.append(li);
     });
-  }
-
-  selectFirstDay(forecast: GroupedForecast, cb: (data: WeatherEntry[]) => void): void {
-    const calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
-    if (calendarItems.length > 0) {
-      calendarItems[0].classList.add('active-date');
-      const firstDate = calendarItems[0].dataset.timestamp;
-      if (firstDate && forecast[firstDate]) {
-        cb(forecast[firstDate]);
-      }
-    }
   }
 
   removeActiveDay(): void {
