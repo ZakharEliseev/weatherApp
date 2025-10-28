@@ -1,5 +1,6 @@
 import { CalendarManager } from './calendarManager';
 import { WeatherDataService } from './WeatherDataService';
+import { WeatherEntry } from './WeatherDataService';
 import { WeatherManager } from './weatherManager';
 
 class App {
@@ -15,12 +16,11 @@ class App {
     this.cityInput = document.querySelector('.weather-form__input') as HTMLInputElement;
   }
 
-  onRenderWeather = (list: any[]) => {
-    this.weatherManager.renderWeather(list)
-  }
+  onRenderWeather = (list: WeatherEntry[]) => {
+    this.weatherManager.renderWeather(list);
+  };
 
-
-  onSubmit = async (e: any) => {
+  onSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     const value = this.cityInput.value;
     if (value.length === 0) {
@@ -33,12 +33,9 @@ class App {
 
   updateUi() {
     const list = this.weatherDataService.getGroupedForecast();
-    this.calendarManager.renderCalendar(
-      list,
-      this.onRenderWeather
-    );
+    this.calendarManager.renderCalendar(list, this.onRenderWeather);
     this.weatherManager.renderCityName(this.cityInput.value);
-    this.calendarManager.selectFirstDay(list, this.onRenderWeather)
+    this.calendarManager.selectFirstDay(list, this.onRenderWeather);
   }
 
   init() {

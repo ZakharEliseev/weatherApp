@@ -10,20 +10,22 @@ type ForecastResponse = {
   }>;
 };
 
-type GroupedForecast = { // этот тип еще нужен?
-  [date: string]: Array<{
-    time: string;
-    temp: number;
-    description: string;
-    icon: string;
-    pressure: number;
-    humidity: number;
-    wind: number;
-  }>;
+export interface WeatherEntry {
+  time: string;
+  temp: number;
+  description: string;
+  icon: string;
+  wind: number;
+  pressure: number;
+  humidity: number;
+}
+
+export type GroupedForecast = {
+  [date: string]: WeatherEntry[];
 };
 
 export class WeatherDataService {
-  private groupedForecast = {};
+  private groupedForecast: GroupedForecast = {};
 
   async fetchWeatherData(city: string): Promise<ForecastResponse[]> {
     try {
@@ -43,9 +45,9 @@ export class WeatherDataService {
     }
   }
 
-  async processWeatherData(city: string): Promise<any> {
+  async processWeatherData(city: string): Promise<void> {
     const list = await this.fetchWeatherData(city);
-    this.groupedForecast = list?.reduce((acc: any, item: any) => {
+    this.groupedForecast = list?.reduce((acc: GroupedForecast, item: any) => {
       const date = dayjs(item.dt_txt).format('YYYY-MM-DD');
       const time = dayjs(item.dt_txt).format('HH:mm');
 
@@ -65,7 +67,7 @@ export class WeatherDataService {
     }, {});
   }
 
-  getGroupedForecast() {
+  getGroupedForecast(): GroupedForecast {
     return this.groupedForecast;
   }
 }

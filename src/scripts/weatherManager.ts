@@ -1,3 +1,5 @@
+
+import { WeatherEntry } from './WeatherDataService';
 export class WeatherManager {
   private weatherBlock: HTMLUListElement;
   private city: HTMLHeadingElement;
@@ -11,12 +13,12 @@ export class WeatherManager {
     ) as HTMLTemplateElement;
   }
 
-  renderCityName(cityName: string) {
+  renderCityName(cityName: string): void {
     const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(data: any[]) {
+  renderWeather(data: WeatherEntry[]): void {
     this.weatherBlock.replaceChildren();
     data.forEach((d: any) => {
       const template = this.templateWeatherItem.content.cloneNode(true) as DocumentFragment;

@@ -1,4 +1,5 @@
 import { DateFormatter } from './DateFormatter';
+import { GroupedForecast, WeatherEntry } from './WeatherDataService';
 
 export class CalendarManager {
   private calendarBlock: HTMLDivElement;
@@ -8,7 +9,7 @@ export class CalendarManager {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
   }
 
-  renderCalendar(forecast: { [date: string]: any[] }, cb: (weatherData: any[]) => void) {
+  renderCalendar(forecast: GroupedForecast, cb: (weatherData: WeatherEntry[]) => void) {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
     days.forEach((d) => {
@@ -46,7 +47,7 @@ export class CalendarManager {
     });
   }
 
-  selectFirstDay(forecast: { [date: string]: any[] }, cb: (data: any[]) => void ){
+  selectFirstDay(forecast: GroupedForecast, cb: (data: WeatherEntry[]) => void) {
     const calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
     if (calendarItems.length > 0) {
       calendarItems[0].classList.add('active-date');
@@ -57,10 +58,10 @@ export class CalendarManager {
     }
   }
 
-  removeActiveDay() {
+  removeActiveDay(): void {
     const days = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
     days.forEach((d) => {
       d.classList.remove('active-date');
-    })
+    });
   }
 }
