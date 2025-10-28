@@ -1,4 +1,4 @@
-import { UiManager } from './calendarManager';
+import { UiManager } from './UiManager';
 import { WeatherDataService } from './WeatherDataService';
 
 class App {
