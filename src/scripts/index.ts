@@ -36,7 +36,6 @@ class App {
     const list = this.weatherDataService.getGroupedForecast();
     this.calendarManager.renderCalendar(list, this.onRenderWeather);
     this.weatherManager.renderCityName(this.cityInput.value);
-    // this.calendarManager.selectFirstDay(list, this.onRenderWeather);
   }
 
   init(): void {
