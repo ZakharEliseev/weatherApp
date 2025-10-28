@@ -1,5 +1,4 @@
 import { CalendarManager } from './calendarManager';
-import { DateFormatter } from './DateFormatter';
 import { WeatherDataService } from './WeatherDataService';
 import { WeatherManager } from './weatherManager';
 
@@ -7,7 +6,7 @@ class App {
   private searchForm: HTMLFormElement;
   private cityInput: HTMLInputElement;
   private calendarManager = new CalendarManager();
-  private dateFormatter = new DateFormatter();
+
   private weatherDataService = new WeatherDataService();
   private weatherManager = new WeatherManager();
 
@@ -31,9 +30,6 @@ class App {
     const list = this.weatherDataService.getGroupedForecast();
     this.calendarManager.renderCalendar(
       list,
-      this.dateFormatter.formatDate,
-      this.dateFormatter.formatMonth,
-      this.dateFormatter.formatWeekday,
     );
     this.weatherManager.renderCityName(this.cityInput.value);
   }

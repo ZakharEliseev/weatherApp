@@ -1,6 +1,9 @@
+import { DateFormatter } from './DateFormatter';
+
 export class CalendarManager {
   private calendarBlock: HTMLDivElement;
   private calendarItems: NodeListOf<HTMLLIElement>;
+  private dateFormatter = new DateFormatter();
 
   constructor() {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
@@ -13,12 +16,7 @@ export class CalendarManager {
     });
   }
 
-  renderCalendar(
-    forecast: { [date: string]: any[] },
-    getDate: (day: string) => string,
-    getMonth: (month: string) => string,
-    getWeekday: (month: string) => string,
-  ) {
+  renderCalendar(forecast: { [date: string]: any[] }) {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
     days.forEach((d) => {
@@ -27,7 +25,7 @@ export class CalendarManager {
 
       const day: HTMLHeadingElement = document.createElement('h2');
       day.classList.add('calendar-day');
-      day.textContent = getDate(d);
+      day.textContent = this.dateFormatter.formatDate(d);
       li.append(day);
 
       const dayHeader: HTMLDivElement = document.createElement('div');
@@ -36,11 +34,11 @@ export class CalendarManager {
 
       const month: HTMLParagraphElement = document.createElement('p');
       month.classList.add('calendar-header_month');
-      month.textContent = getMonth(d);
+      month.textContent = this.dateFormatter.formatMonth(d);
 
       const weekday: HTMLParagraphElement = document.createElement('p');
       weekday.classList.add('calendar-header_weekday');
-      weekday.textContent = getWeekday(d);
+      weekday.textContent = this.dateFormatter.formatWeekday(d);
 
       dayHeader.append(month, weekday);
       this.calendarBlock.append(li);
