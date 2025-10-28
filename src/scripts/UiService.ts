@@ -17,18 +17,40 @@ export class UiService {
     this.city = document.querySelector('.city') as HTMLHeadingElement;
   }
 
-  render(forecast: GroupedForecast, cityName: string): void {
-    this.renderCalendar(forecast);
-    this.renderCityName(cityName);
-    this.renderWeather(forecast[this.activeDay])
+  private elementCreator(
+    tag: string,
+    {
+      className,
+      content,
+    }: {
+      className: string;
+      content?: string;
+    },
+    children: (HTMLElement | string)[] = [],
+  ): HTMLElement {
+    const element = document.createElement(tag);
+    if (className) {
+      element.classList.add(className);
+    }
+    element.textContent = content ?? null;
+    children.forEach((elem) => element.append(elem));
+    return element;
   }
 
-  renderCityName(cityName: string): void {
+  private div(cls: string, children?: HTMLElement[]) {
+    return this.elementCreator('div', { className: cls }, children);
+  }
+
+  private p(cls: string, content: string) {
+    return this.elementCreator('p', { className: cls, content: content });
+  }
+
+  private renderCityName(cityName: string): void {
     const currentCity = cityName.charAt(0).toUpperCase() + cityName.slice(1);
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  toggleActiveDay(currentDay: string) {
+  private toggleActiveDay(currentDay: string) {
     this.activeDay = currentDay;
     document.querySelectorAll('.calendar-item').forEach((day) => {
       const element = day as HTMLLIElement;
@@ -36,14 +58,25 @@ export class UiService {
     });
   }
 
+  render(forecast: GroupedForecast, cityName: string): void {
+    this.renderCalendar(forecast);
+    this.renderCityName(cityName);
+    this.renderWeather(forecast[this.activeDay]);
+  }
+
+  createLi(forecast: GroupedForecast) {
+    this.calendarBlock.replaceChildren();
+    const days = Object.keys(forecast);
+    
+  }
+
   renderCalendar(forecast: GroupedForecast): void {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
 
     days.forEach((d) => {
-      const li: HTMLLIElement = document.createElement('li');
+      const li = this.elementCreator('li', { className: 'calendar-item' });
       li.dataset.timestamp = d;
-      li.classList.add('calendar-item');
       if (d === this.activeDay) {
         li.classList.add('active-date');
       }
@@ -56,24 +89,18 @@ export class UiService {
         }
       });
 
-      const day: HTMLHeadingElement = document.createElement('h2');
-      day.classList.add('calendar-day');
-      day.textContent = this.dateFormatter.formatDate(d);
+      const day = this.elementCreator('h2', {
+        className: 'calendar-day',
+        content: this.dateFormatter.formatDate(d),
+      });
       li.append(day);
 
-      const dayHeader: HTMLDivElement = document.createElement('div');
-      dayHeader.classList.add('calendar-header');
+      const dayHeader = this.div('calendar-header', [
+        this.p('calendar-header_month', this.dateFormatter.formatMonth(d)),
+        this.p('calendar-header_weekday', this.dateFormatter.formatWeekday(d)),
+      ]);
+
       li.append(dayHeader);
-
-      const month: HTMLParagraphElement = document.createElement('p');
-      month.classList.add('calendar-header_month');
-      month.textContent = this.dateFormatter.formatMonth(d);
-
-      const weekday: HTMLParagraphElement = document.createElement('p');
-      weekday.classList.add('calendar-header_weekday');
-      weekday.textContent = this.dateFormatter.formatWeekday(d);
-
-      dayHeader.append(month, weekday);
       this.calendarBlock.append(li);
     });
   }
