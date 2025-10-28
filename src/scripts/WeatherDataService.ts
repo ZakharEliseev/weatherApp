@@ -71,10 +71,3 @@ export class WeatherDataService {
     return this.groupedForecast;
   }
 }
-
-
-
-
-
-
-
