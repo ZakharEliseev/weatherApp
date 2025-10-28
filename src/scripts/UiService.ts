@@ -16,10 +16,11 @@ export class UiService {
     this.weatherBlock = document.querySelector('.weather') as HTMLUListElement;
     this.city = document.querySelector('.city') as HTMLHeadingElement;
   }
-  
+
   render(forecast: GroupedForecast, cityName: string): void {
     this.renderCalendar(forecast);
     this.renderCityName(cityName);
+    this.renderWeather(forecast[this.activeDay])
   }
 
   renderCityName(cityName: string): void {
@@ -28,6 +29,7 @@ export class UiService {
   }
 
   toggleActiveDay(currentDay: string) {
+    this.activeDay = currentDay;
     document.querySelectorAll('.calendar-item').forEach((day) => {
       const element = day as HTMLLIElement;
       element.classList.toggle('active-date', element.dataset.timestamp === currentDay);
@@ -44,7 +46,6 @@ export class UiService {
       li.classList.add('calendar-item');
       if (d === this.activeDay) {
         li.classList.add('active-date');
-        this.renderWeather(forecast[d]);
       }
       li.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLLIElement;
