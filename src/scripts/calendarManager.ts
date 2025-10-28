@@ -9,7 +9,7 @@ export class CalendarManager {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
   }
 
-  renderCalendar(forecast: GroupedForecast, cb: (weatherData: WeatherEntry[]) => void) {
+  renderCalendar(forecast: GroupedForecast, cb: (weatherData: WeatherEntry[]) => void): void {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
     days.forEach((d) => {
@@ -47,7 +47,7 @@ export class CalendarManager {
     });
   }
 
-  selectFirstDay(forecast: GroupedForecast, cb: (data: WeatherEntry[]) => void) {
+  selectFirstDay(forecast: GroupedForecast, cb: (data: WeatherEntry[]) => void): void {
     const calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
     if (calendarItems.length > 0) {
       calendarItems[0].classList.add('active-date');

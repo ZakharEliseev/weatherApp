@@ -16,11 +16,11 @@ class App {
     this.cityInput = document.querySelector('.weather-form__input') as HTMLInputElement;
   }
 
-  onRenderWeather = (list: WeatherEntry[]) => {
+  onRenderWeather = (list: WeatherEntry[]): void => {
     this.weatherManager.renderWeather(list);
   };
 
-  onSubmit = async (e: SubmitEvent) => {
+  onSubmit = async (e: SubmitEvent): Promise<void> => {
     e.preventDefault();
     const value = this.cityInput.value;
     if (value.length === 0) {
@@ -31,14 +31,14 @@ class App {
     this.updateUi();
   };
 
-  updateUi() {
+  updateUi(): void {
     const list = this.weatherDataService.getGroupedForecast();
     this.calendarManager.renderCalendar(list, this.onRenderWeather);
     this.weatherManager.renderCityName(this.cityInput.value);
     this.calendarManager.selectFirstDay(list, this.onRenderWeather);
   }
 
-  init() {
+  init(): void {
     this.searchForm.addEventListener('submit', this.onSubmit);
   }
 }
