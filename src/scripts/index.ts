@@ -19,6 +19,7 @@ class App {
     this.weatherManager.renderWeather(list)
   }
 
+
   onSubmit = async (e: any) => {
     e.preventDefault();
     const value = this.cityInput.value;
@@ -37,6 +38,7 @@ class App {
       this.onRenderWeather
     );
     this.weatherManager.renderCityName(this.cityInput.value);
+    this.calendarManager.selectFirstDay(list, this.onRenderWeather)
   }
 
   init() {

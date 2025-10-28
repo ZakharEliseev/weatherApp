@@ -2,18 +2,13 @@ import { DateFormatter } from './DateFormatter';
 
 export class CalendarManager {
   private calendarBlock: HTMLDivElement;
-  private calendarItems: NodeListOf<HTMLLIElement>;
   private dateFormatter = new DateFormatter();
 
   constructor() {
     this.calendarBlock = document.querySelector('.calendar') as HTMLDivElement;
-    this.calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
   }
 
-  renderCalendar(
-    forecast: { [date: string]: any[] }, 
-    cb: (weatherData: any[]) => void
-  ) {
+  renderCalendar(forecast: { [date: string]: any[] }, cb: (weatherData: any[]) => void) {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
     days.forEach((d) => {
@@ -22,10 +17,11 @@ export class CalendarManager {
       li.classList.add('calendar-item');
       li.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLLIElement;
+        this.removeActiveDay();
         target.classList.add('active-date');
         const date = target.dataset.timestamp;
         if (date && forecast[date]) {
-           cb(forecast[date]);
+          cb(forecast[date]);
         }
       });
       const day: HTMLHeadingElement = document.createElement('h2');
@@ -48,5 +44,23 @@ export class CalendarManager {
       dayHeader.append(month, weekday);
       this.calendarBlock.append(li);
     });
+  }
+
+  selectFirstDay(forecast: { [date: string]: any[] }, cb: (data: any[]) => void ){
+    const calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
+    if (calendarItems.length > 0) {
+      calendarItems[0].classList.add('active-date');
+      const firstDate = calendarItems[0].dataset.timestamp;
+      if (firstDate && forecast[firstDate]) {
+        cb(forecast[firstDate]);
+      }
+    }
+  }
+
+  removeActiveDay() {
+    const days = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
+    days.forEach((d) => {
+      d.classList.remove('active-date');
+    })
   }
 }
