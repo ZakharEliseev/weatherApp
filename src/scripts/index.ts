@@ -1,24 +1,16 @@
-import { CalendarManager } from './calendarManager';
+import { UiManager } from './calendarManager';
 import { WeatherDataService } from './WeatherDataService';
-import { WeatherEntry } from './WeatherDataService';
-import { WeatherManager } from './weatherManager';
 
 class App {
   private searchForm: HTMLFormElement;
   private cityInput: HTMLInputElement;
-  private calendarManager = new CalendarManager();
-
+  private uiManager = new UiManager();
   private weatherDataService = new WeatherDataService();
-  private weatherManager = new WeatherManager();
 
   constructor() {
     this.searchForm = document.querySelector('.weather-form') as HTMLFormElement;
     this.cityInput = document.querySelector('.weather-form__input') as HTMLInputElement;
   }
-
-  onRenderWeather = (list: WeatherEntry[]): void => {
-    this.weatherManager.renderWeather(list);
-  };
 
   onSubmit = async (e: SubmitEvent): Promise<void> => {
     e.preventDefault();
@@ -34,8 +26,8 @@ class App {
 
   updateUi(): void {
     const list = this.weatherDataService.getGroupedForecast();
-    this.calendarManager.renderCalendar(list, this.onRenderWeather);
-    this.weatherManager.renderCityName(this.cityInput.value);
+    this.uiManager.render(list);
+    this.uiManager.renderCityName(this.cityInput.value);
   }
 
   init(): void {
