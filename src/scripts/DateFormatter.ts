@@ -6,7 +6,7 @@ dayjs.locale('ru');
 
 
 
-const Month: { [key: string]: string } = {
+const RUSSIAN_MONTHS: { [key: string]: string } = {
   1: 'Января',
   2: 'Февраля',
   3: 'Марта',
@@ -32,7 +32,7 @@ export class DateFormatter {
   }
 
   formatMonth(month: string): string {
-    return Month[dayjs(month).format('M')];
+    return RUSSIAN_MONTHS[dayjs(month).format('M')];
   }
 
 }

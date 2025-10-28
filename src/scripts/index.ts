@@ -1,12 +1,12 @@
-import { CalendarService } from './calendarManager';
-import { DateFormatter } from './dateService';
-import { WeatherDataService } from './fetchData';
+import { CalendarManager } from './calendarManager';
+import { DateFormatter } from './DateFormatter';
+import { WeatherDataService } from './WeatherDataService';
 import { WeatherManager } from './weatherManager';
 
 class App {
   private searchForm: HTMLFormElement;
   private cityInput: HTMLInputElement;
-  private calendarManager = new CalendarService();
+  private calendarManager = new CalendarManager();
   private dateFormatter = new DateFormatter();
   private weatherDataService = new WeatherDataService();
   private weatherManager = new WeatherManager();

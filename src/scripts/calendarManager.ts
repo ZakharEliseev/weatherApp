@@ -1,4 +1,4 @@
-export class CalendarService {
+export class CalendarManager {
   private calendarBlock: HTMLDivElement;
   private calendarItems: NodeListOf<HTMLLIElement>;
 
