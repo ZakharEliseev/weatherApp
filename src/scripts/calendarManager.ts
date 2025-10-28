@@ -10,19 +10,24 @@ export class CalendarManager {
     this.calendarItems = document.querySelectorAll('.calendar-item') as NodeListOf<HTMLLIElement>;
   }
 
-  clearActiveDate(): void {
-    this.calendarItems.forEach((el) => {
-      el.classList.remove('active-date');
-    });
-  }
-
-  renderCalendar(forecast: { [date: string]: any[] }) {
+  renderCalendar(
+    forecast: { [date: string]: any[] }, 
+    cb: (weatherData: any[]) => void
+  ) {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
     days.forEach((d) => {
       const li: HTMLLIElement = document.createElement('li');
+      li.dataset.timestamp = d;
       li.classList.add('calendar-item');
-
+      li.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLLIElement;
+        target.classList.add('active-date');
+        const date = target.dataset.timestamp;
+        if (date && forecast[date]) {
+           cb(forecast[date]);
+        }
+      });
       const day: HTMLHeadingElement = document.createElement('h2');
       day.classList.add('calendar-day');
       day.textContent = this.dateFormatter.formatDate(d);

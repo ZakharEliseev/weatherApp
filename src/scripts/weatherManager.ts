@@ -16,25 +16,22 @@ export class WeatherManager {
     this.city.textContent = `Погода в городе ${currentCity}`;
   }
 
-  renderWeather(
-    data: any,
-    hours: (time: string) => string,
-  ) {
+  renderWeather(data: any[]) {
     this.weatherBlock.replaceChildren();
     data.forEach((d: any) => {
       const template = this.templateWeatherItem.content.cloneNode(true) as DocumentFragment;
 
       const time = template.querySelector('.weather-temp_time') as HTMLParagraphElement;
-      time.textContent = hours(d.time);
+      time.textContent = d.time;
 
       const degree = template.querySelector('.weather-temp_degree') as HTMLHeadElement;
       degree.textContent = d.temp + ' °C';
 
       const description = template.querySelector('.weather-descr-text') as HTMLDivElement;
-      description.textContent = d.weatherDescription;
+      description.textContent = d.description;
 
       const icon = template.querySelector('.weather-descr_icon') as HTMLImageElement;
-      icon.src = `./src/img/icons/${d.weatherIcon}@2x.png`;
+      icon.src = `./src/img/icons/${d.icon}@2x.png`;
 
       const wind = template.querySelector('.weather-wind_metric') as HTMLParagraphElement;
       wind.textContent = d.wind + ' м/с';

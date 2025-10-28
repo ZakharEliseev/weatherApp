@@ -15,6 +15,10 @@ class App {
     this.cityInput = document.querySelector('.weather-form__input') as HTMLInputElement;
   }
 
+  onRenderWeather = (list: any[]) => {
+    this.weatherManager.renderWeather(list)
+  }
+
   onSubmit = async (e: any) => {
     e.preventDefault();
     const value = this.cityInput.value;
@@ -30,6 +34,7 @@ class App {
     const list = this.weatherDataService.getGroupedForecast();
     this.calendarManager.renderCalendar(
       list,
+      this.onRenderWeather
     );
     this.weatherManager.renderCityName(this.cityInput.value);
   }
