@@ -21,17 +21,17 @@ const Month: { [key: string]: string } = {
   12: 'Декабря',
 };
 
-export class DateService {
+export class DateFormatter {
 
-  getWeekday(weekday: string): string {
+  formatWeekday(weekday: string): string {
     return dayjs(weekday).format('dddd')[0].toUpperCase() + dayjs(weekday).format('dddd').slice(1);
   }
 
-  getDate(day: string): string {
+  formatDate(day: string): string {
     return dayjs(day).format('D');
   }
 
-  getMonth(month: string): string {
+  formatMonth(month: string): string {
     return Month[dayjs(month).format('M')];
   }
 

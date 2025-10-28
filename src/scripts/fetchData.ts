@@ -10,7 +10,7 @@ type ForecastResponse = {
   }>;
 };
 
-type GroupedForecast = {
+type GroupedForecast = { // этот тип еще нужен?
   [date: string]: Array<{
     time: string;
     temp: number;
@@ -22,10 +22,10 @@ type GroupedForecast = {
   }>;
 };
 
-export class DataManager {
-  private forecast = {};
+export class WeatherDataService {
+  private groupedForecast = {};
 
-  async fetchData(city: string): Promise<ForecastResponse[]> {
+  async fetchWeatherData(city: string): Promise<ForecastResponse[]> {
     try {
       const { data } = await axios.get('https://api.openweathermap.org/data/2.5/forecast', {
         params: {
@@ -43,9 +43,9 @@ export class DataManager {
     }
   }
 
-  async getForecast(city: string): Promise<any> {
-    const list = await this.fetchData(city);
-    this.forecast = list?.reduce((acc: any, item: any) => {
+  async processWeatherData(city: string): Promise<any> {
+    const list = await this.fetchWeatherData(city);
+    this.groupedForecast = list?.reduce((acc: any, item: any) => {
       const date = dayjs(item.dt_txt).format('YYYY-MM-DD');
       const time = dayjs(item.dt_txt).format('HH:mm');
 
@@ -61,11 +61,12 @@ export class DataManager {
 
       if (!acc[date]) acc[date] = [];
       acc[date].push(entry);
+      return acc; // все таки надо было возвращать
     }, {});
   }
 
-  getData() {
-    return this.forecast;
+  getGroupedForecast() {
+    return this.groupedForecast;
   }
 }
 
