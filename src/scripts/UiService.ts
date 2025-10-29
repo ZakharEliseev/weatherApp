@@ -66,10 +66,10 @@ export class UiService {
     this.calendarBlock.replaceChildren();
     const days = Object.keys(forecast);
 
-    days.forEach((d) => {
+    days.forEach((day) => {
       const li = this.elementCreator('li', { className: 'calendar-item' });
-      li.dataset.timestamp = d;
-      if (d === this.activeDay) {
+      li.dataset.timestamp = day;
+      if (day === this.activeDay) {
         li.classList.add('active-date');
       }
       li.addEventListener('click', (e) => {
@@ -81,15 +81,15 @@ export class UiService {
         }
       });
 
-      const day = this.elementCreator('h2', {
+      const calendarDay = this.elementCreator('h2', {
         className: 'calendar-day',
-        content: this.dateFormatter.formatDate(d),
+        content: this.dateFormatter.formatDate(day),
       });
-      li.append(day);
+      li.append(calendarDay);
 
       const dayHeader = this.div('calendar-header', [
-        this.p('calendar-header_month', this.dateFormatter.formatMonth(d)),
-        this.p('calendar-header_weekday', this.dateFormatter.formatWeekday(d)),
+        this.p('calendar-header_month', this.dateFormatter.formatMonth(day)),
+        this.p('calendar-header_weekday', this.dateFormatter.formatWeekday(day)),
       ]);
 
       li.append(dayHeader);
@@ -99,38 +99,43 @@ export class UiService {
 
   renderWeather(data: WeatherEntry[]): void {
     this.weatherBlock.replaceChildren();
-    data.forEach((d: any) => {
-      
+    data.forEach((day: any) => {
       const temp = this.div('weather-temp', [
-        this.p('weather-temp_time', d.time),
-        this.p('weather-temp_degree', d.temp + ' °C'),
+        this.p('weather-temp_time', day.time),
+        this.p('weather-temp_degree', day.temp + ' °C'),
       ]);
-      
+
       const icon = document.createElement('img') as HTMLImageElement;
       icon.classList.add('weather-descr_icon');
-      icon.src = `./src/img/icons/${d.icon}@2x.png`;
-      
+      icon.src = `./src/img/icons/${day.icon}@2x.png`;
+
       const description = this.div('weather-descr', [
-        this.p('weather-descr-text', d.description),
+        this.p('weather-descr-text', day.description),
         icon,
       ]);
-      
+
       const wind = this.div('weather-wind', [
         this.p('weather-wind_title', 'Скорость ветра'),
-        this.p('weather-wind_metric', d.wind + ' м/с'),
+        this.p('weather-wind_metric', day.wind + ' м/с'),
       ]);
-      
+
       const pressure = this.div('weather-pressure', [
         this.p('weather-pressure_title', 'Атмосферное давление'),
-        this.p('weather-pressure_metric', d.pressure + ' мм рт.'),
+        this.p('weather-pressure_metric', day.pressure + ' мм рт.'),
       ]);
-      
+
       const humidity = this.div('weather-humidity', [
         this.p('weather-humidity_title', 'Влажность'),
-        this.p('weather-humidity_metric', d.humidity + ' %')
+        this.p('weather-humidity_metric', day.humidity + ' %'),
       ]);
-      
-      const li = this.elementCreator('li', { className: 'weather-item' }, [temp, description, wind, pressure, humidity]);
+
+      const li = this.elementCreator('li', { className: 'weather-item' }, [
+        temp,
+        description,
+        wind,
+        pressure,
+        humidity,
+      ]);
       this.weatherBlock.append(li);
     });
   }
