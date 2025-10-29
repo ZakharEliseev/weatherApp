@@ -1,36 +1,26 @@
 import 'dayjs/locale/ru';
 
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 
 dayjs.locale('ru');
 
-const RUSSIAN_MONTHS: { [key: string]: string } = {
-  1: 'Января',
-  2: 'Февраля',
-  3: 'Марта',
-  4: 'Апреля',
-  5: 'Мая',
-  6: 'Июня',
-  7: 'Июля',
-  8: 'Августа',
-  9: 'Сентября',
-  10: 'Октября',
-  11: 'Ноября',
-  12: 'Декабря',
-};
-
 export class DateTimeService {
+  private dayjs: Dayjs;
 
-  formatWeekday(weekday: string): string {
+  constructor() {
+    this.dayjs = dayjs();
+  }
+
+  getWeekday(weekday: string): string {
     return dayjs(weekday).format('dddd')[0].toUpperCase() + dayjs(weekday).format('dddd').slice(1);
   }
 
-  formatDate(day: string): string {
+  getDate(day: string): string {
     return dayjs(day).format('D');
   }
 
-  formatMonth(month: string): string {
-    return RUSSIAN_MONTHS[dayjs(month).format('M')];
+  getMonth(month: string): string {
+    return dayjs(month).format('MMMM')[0].toUpperCase() + dayjs(month).format('MMMM').slice(1);
   }
 
 }

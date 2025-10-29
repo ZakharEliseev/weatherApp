@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { DateTimeService } from './DateTimeService';
-import { GroupedForecast, WeatherEntry } from './types';
+import { GroupedForecast, WeatherEntry } from './models/index';
 
 export class UiService {
   private weatherBlock: HTMLUListElement;
@@ -83,13 +83,13 @@ export class UiService {
 
       const calendarDay = this.elementCreator('h2', {
         className: 'calendar-day',
-        content: this.dateFormatter.formatDate(day),
+        content: this.dateFormatter.getDate(day),
       });
       li.append(calendarDay);
 
       const dayHeader = this.div('calendar-header', [
-        this.p('calendar-header_month', this.dateFormatter.formatMonth(day)),
-        this.p('calendar-header_weekday', this.dateFormatter.formatWeekday(day)),
+        this.p('calendar-header_month', this.dateFormatter.getMonth(day)),
+        this.p('calendar-header_weekday', this.dateFormatter.getWeekday(day)),
       ]);
 
       li.append(dayHeader);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import {ForecastResponse, GroupedForecast} from './types'
+import { ForecastResponse, GroupedForecast } from './models/index';
 
 export class WeatherDataService {
   private groupedForecast: GroupedForecast = {};
