@@ -1,6 +1,3 @@
-import { UiService } from '../UiService';
-import { WeatherDataService } from '../WeatherDataService';
-
 export type ForecastResponse = {
   list: Array<{
     dt_txt: string;
