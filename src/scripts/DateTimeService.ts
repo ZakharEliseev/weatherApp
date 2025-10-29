@@ -19,7 +19,7 @@ const RUSSIAN_MONTHS: { [key: string]: string } = {
   12: 'Декабря',
 };
 
-export class DateFormatter {
+export class DateTimeService {
 
   formatWeekday(weekday: string): string {
     return dayjs(weekday).format('dddd')[0].toUpperCase() + dayjs(weekday).format('dddd').slice(1);

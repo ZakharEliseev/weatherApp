@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
-import { DateFormatter } from './DateTimeService';
+import { DateTimeService } from './DateTimeService';
 import { GroupedForecast, WeatherEntry } from './types';
 
 export class UiService {
   private weatherBlock: HTMLUListElement;
   private city: HTMLHeadingElement;
   private calendarBlock: HTMLDivElement;
-  private dateFormatter = new DateFormatter();
+  private dateFormatter = new DateTimeService();
   private activeDay: string;
 
   constructor() {
