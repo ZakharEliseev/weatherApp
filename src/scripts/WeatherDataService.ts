@@ -1,10 +1,12 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 import { ForecastResponse, GroupedForecast } from '../models/index';
+import { DateTimeService } from './DateTimeService';
 
 export class WeatherDataService {
   private groupedForecast: GroupedForecast = {};
+  private dateTimeService: DateTimeService = new DateTimeService();
+
 
   async fetchWeatherData(city: string): Promise<ForecastResponse[]> {
     try {
@@ -27,8 +29,8 @@ export class WeatherDataService {
   async processWeatherData(city: string): Promise<void> {
     const list = await this.fetchWeatherData(city);
     this.groupedForecast = list?.reduce((acc: GroupedForecast, item: any) => {
-      const date = dayjs(item.dt_txt).format('YYYY-MM-DD');
-      const time = dayjs(item.dt_txt).format('HH:mm');
+      const date = this.dateTimeService.format(item.dt_txt, 'YYYY-MM-DD')
+      const time = this.dateTimeService.format(item.dt_txt, 'HH:mm');
 
       const entry = {
         time,
