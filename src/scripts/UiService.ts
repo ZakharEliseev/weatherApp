@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
+import { GroupedForecast, WeatherEntry } from '../models/index';
 import { DateTimeService } from './DateTimeService';
-import { GroupedForecast, WeatherEntry } from './models/index';
 
 export class UiService {
   private weatherBlock: HTMLUListElement;
