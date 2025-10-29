@@ -3,30 +3,6 @@ import './index.scss';
 import { UiService } from './scripts/UiService';
 import { WeatherDataService } from './scripts/WeatherDataService';
 
-export type ForecastResponse = {
-  list: Array<{
-    dt_txt: string;
-    main: { temp: number; pressure: number; humidity: number };
-    weather: Array<{ description: string; icon: string }>;
-    wind: { speed: number };
-  }>;
-};
-
-export interface WeatherEntry {
-  time: string;
-  temp: number;
-  description: string;
-  icon: string;
-  wind: number;
-  pressure: number;
-  humidity: number;
-}
-
-export type GroupedForecast = {
-  [date: string]: WeatherEntry[];
-};
-
-
 class App {
   private searchForm: HTMLFormElement;
   private cityInput: HTMLInputElement;
