@@ -83,7 +83,7 @@ export class UiService {
 
       const calendarDay = this.elementCreator('h2', {
         className: 'calendar-day',
-        content: this.dateFormatter.getDate(day),
+        content: this.dateFormatter.format(day, 'D'),
       });
       li.append(calendarDay);
 

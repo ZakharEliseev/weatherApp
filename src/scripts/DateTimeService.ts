@@ -1,26 +1,23 @@
-import 'dayjs/locale/ru';
+import dayjs from "dayjs";
 
-import dayjs, {Dayjs} from 'dayjs';
 
-dayjs.locale('ru');
 
 export class DateTimeService {
-  private dayjs: Dayjs;
-
   constructor() {
-    this.dayjs = dayjs();
+    dayjs.locale('ru');
   }
 
-  getWeekday(weekday: string): string {
-    return dayjs(weekday).format('dddd')[0].toUpperCase() + dayjs(weekday).format('dddd').slice(1);
+  format(date: string, template: string) {
+    return dayjs(date).format(template);
   }
 
-  getDate(day: string): string {
-    return dayjs(day).format('D');
+  getWeekday(date: string): string {
+    const weekday = dayjs(date).format('dddd');
+    return weekday[0].toUpperCase() + weekday.slice(1);
   }
 
-  getMonth(month: string): string {
-    return dayjs(month).format('MMMM')[0].toUpperCase() + dayjs(month).format('MMMM').slice(1);
+  getMonth(date: string): string {
+    const month = dayjs(date).format('MMMM');
+    return month[0].toUpperCase() + month.slice(1);
   }
-
 }
