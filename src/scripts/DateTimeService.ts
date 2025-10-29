@@ -1,11 +1,9 @@
+import 'dayjs/locale/ru';
+
 import dayjs from "dayjs";
-
-
+dayjs.locale('ru');
 
 export class DateTimeService {
-  constructor() {
-    dayjs.locale('ru');
-  }
 
   format(date: string, template: string) {
     return dayjs(date).format(template);
